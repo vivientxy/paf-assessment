@@ -18,7 +18,7 @@ import ibf2024.assessment.paf.batch4.models.Style;
 public class BeerRepository {
 
 	@Autowired
-    JdbcTemplate template;
+    private JdbcTemplate template;
 
 	// DO NOT CHANGE THE SIGNATURE OF THIS METHOD
 	public List<Style> getStyles() {
@@ -107,7 +107,7 @@ public class BeerRepository {
 				beer.setBreweryName(rs.getString("brewery_name"));
 				brewery.addBeer(beer);
 			}
-			
+
 			rs.first();
 			brewery.setBreweryId(rs.getInt("brewery_id"));
 			brewery.setName(rs.getString("brewery_name"));
