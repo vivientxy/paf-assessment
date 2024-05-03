@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Brewery Details</title>
+	</head>
+	<body>
+
+		<div th:if="${#bools.isTrue(breweryIsNull)}">
+			<h2>Brewery not found</h2>
+			<a href="/">Back</a>
+		</div>
+
+		<div th:unless="${#bools.isTrue(breweryIsNull)}">
+			<h1 th:text="${brewery.name}"></h1>
+
+			<a href="/">Back</a>
+			
+			<table>
+				<tr>
+					<td>Description:</td>
+					<td>
+						<span th:text="${brewery.description}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>Address:</td>
+					<td>
+						<div th:text="${brewery.address1}"></div>
+						<div th:text="${brewery.address2}"></div>
+						<div th:text="${brewery.city}"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>Phone:</td>
+					<td>
+						<span th:text="${brewery.phone}"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>Website:</td>
+					<td>
+						<a th:href="${brewery.website}">Go</a>
+					</td>
+				</tr>
+			</table>
+
+			<h2>Beers</h2>
+
+			<form th:action="@{/brewery/{id}/order(id=${brewery.breweryId})}" method="post">
+
+				<button type="submit">Place Order</button>
+
+				<table border="1">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+							<th>Quantity</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-th-each="b: ${brewery.beers}">
+							<td>
+								<span data-th-text="*{b.beerName}"></span> 
+							</td>
+							<td>
+								<span data-th-text="*{b.beerDescription}"></span> 
+							</td>
+							<td>
+								<input type="hidden" name="beerId" th:value="${b.beerId}">
+								<input type="number" name="quantity">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</form>
+		</div>
+
+	</body>
+</html>

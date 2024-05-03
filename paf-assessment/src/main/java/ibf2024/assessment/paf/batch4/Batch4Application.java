@@ -19,7 +19,7 @@ public class Batch4Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println(">>>> " + repo.getStyles());
+		// System.out.println(">>>> " + repo.getBeersFromBrewery(2));
 	}
 
 }

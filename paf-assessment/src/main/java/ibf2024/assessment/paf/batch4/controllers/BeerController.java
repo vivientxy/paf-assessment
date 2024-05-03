@@ -1,6 +1,7 @@
 package ibf2024.assessment.paf.batch4.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ibf2024.assessment.paf.batch4.models.Beer;
+import ibf2024.assessment.paf.batch4.models.Brewery;
 import ibf2024.assessment.paf.batch4.models.Style;
 import ibf2024.assessment.paf.batch4.repositories.BeerRepository;
 
@@ -30,7 +32,7 @@ public class BeerController {
 	
 	// Task 3 - view 1
 	@GetMapping("/beer/style/{id}")
-	public ModelAndView getView1(@PathVariable Integer id, @RequestParam String styleName) {
+	public ModelAndView getView1(@PathVariable Integer id, @RequestParam(required = false) String styleName) {
 		ModelAndView mav = new ModelAndView("view1");
 		List<Beer> beers = beerRepo.getBreweriesByBeer(id);
 		mav.addObject("styleName", styleName);
@@ -38,7 +40,19 @@ public class BeerController {
 		return mav;
 	}
 
-	//TODO Task 4 - view 2
+	//Task 4 - view 2
+	@GetMapping("/brewery/{id}")
+	public ModelAndView getView2(@PathVariable Integer id) {
+		ModelAndView mav = new ModelAndView("view2");
+		Optional<Brewery> brewery = beerRepo.getBeersFromBrewery(id);
+		boolean breweryIsNull = true;
+		if (!brewery.isEmpty()) {
+			breweryIsNull = false;
+			mav.addObject("brewery", brewery.get());
+		}
+		mav.addObject("breweryIsNull", breweryIsNull);
+		return mav;
+	}
 
 	
 	//TODO Task 5 - view 2, place order
