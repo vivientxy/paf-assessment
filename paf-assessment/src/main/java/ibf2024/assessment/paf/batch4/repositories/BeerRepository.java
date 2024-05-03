@@ -42,13 +42,35 @@ public class BeerRepository {
 		}
 		return Collections.unmodifiableList(styles);
 	}
-	
+
 		
 	// DO NOT CHANGE THE METHOD'S NAME OR THE RETURN TYPE OF THIS METHOD
-	public List<Beer> getBreweriesByBeer(/* You can add any number parameters here */) {
-		// TODO: Task 3
-
-		return null;
+	public List<Beer> getBreweriesByBeer(Integer style_id) {
+		// Task 3
+		final String SQL_GET_BREWERIES_BY_BEER = """
+			SELECT beers.id AS beer_id, 
+				beers.name AS beer_name, 
+				beers.descript AS beer_description, 
+				breweries.id AS brewery_id, 
+				breweries.name AS brewery_name
+			FROM beers
+			JOIN breweries
+			ON beers.brewery_id = breweries.id
+			WHERE beers.style_id = ?
+			ORDER BY beer_name ASC;
+			""";
+		SqlRowSet rs = template.queryForRowSet(SQL_GET_BREWERIES_BY_BEER, style_id);
+		List<Beer> beers = new LinkedList<>();
+		while (rs.next()) {
+			Beer beer = new Beer();
+			beer.setBeerId(rs.getInt("beer_id"));
+			beer.setBeerName(rs.getString("beer_name"));
+			beer.setBeerDescription(rs.getString("beer_description"));
+			beer.setBreweryId(rs.getInt("brewery_id"));
+			beer.setBreweryName(rs.getString("brewery_name"));
+			beers.add(beer);
+		}
+		return Collections.unmodifiableList(beers);
 	}
 
 	// DO NOT CHANGE THE METHOD'S NAME OR THE RETURN TYPE OF THIS METHOD
